@@ -362,6 +362,12 @@ main (argc, argv, env)
      char **argv, **env;
 #endif /* !NO_MAIN_ENV_ARG */
 {
+  {
+      FILE *f = fopen("/tmp/bashlog.txt", "a");
+      fprintf(f, "entered main()\n");
+      fflush(f);
+      fclose(f);
+  }
   register int i;
   int code, old_errexit_flag;
 #if defined (RESTRICTED_SHELL)
@@ -1839,6 +1845,12 @@ get_current_user_info ()
 static void
 shell_initialize ()
 {
+  {
+      FILE *f = fopen("/tmp/bashlog.txt", "a");
+      fprintf(f, "shell_initialize\n");
+      fflush(f);
+      fclose(f);
+  }
   char hostname[256];
   int should_be_restricted;
 

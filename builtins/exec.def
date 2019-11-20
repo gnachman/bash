@@ -69,7 +69,7 @@ $END
 #include "common.h"
 #include "bashgetopt.h"
 #include "input.h"
-
+#include <stdio.h>
 /* Not all systems declare ERRNO in errno.h... and some systems #define it! */
 #if !defined (errno)
 extern int errno;
@@ -142,7 +142,8 @@ exec_builtin (list)
     }
 #endif /* RESTRICTED_SHELL */
 
-  args = strvec_from_word_list (list, 1, 0, (int *)NULL);
+int args_count = 0;
+  args = strvec_from_word_list (list, 1, 0, &args_count);
   env = (char **)0;
 
   /* A command with a slash anywhere in its name is not looked up in $PATH. */
@@ -196,6 +197,17 @@ exec_builtin (list)
 
   if (cleanenv == 0 && (subshell_environment & SUBSHELL_PAREN) == 0)
     adjust_shell_level (-1);
+
+  {
+      FILE *f = fopen("/tmp/bashlog.txt", "a");
+      fprintf(f, "doing exec of: ");
+      for (int i = 0; i < args_count; i++) {
+          fprintf(f, " %s", args[i]);
+      }
+      fprintf(f, "\n");
+      fflush(f);
+      fclose(f);
+  }
 
   if (cleanenv)
     {

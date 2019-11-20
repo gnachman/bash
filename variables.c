@@ -843,6 +843,12 @@ adjust_shell_level (change)
       new_level[3] = '\0';
     }
 
+  {
+      FILE *f = fopen("/tmp/bashlog.txt", "a");
+      fprintf(f, "adjust shell level change=%d new_level=%s\n", change, new_level);
+      fflush(f);
+      fclose(f);
+  }
   temp_var = bind_variable ("SHLVL", new_level, 0);
   set_auto_export (temp_var);
 }
@@ -850,6 +856,12 @@ adjust_shell_level (change)
 static void
 initialize_shell_level ()
 {
+  {
+      FILE *f = fopen("/tmp/bashlog.txt", "a");
+      fprintf(f, "initialize shell level\n");
+      fflush(f);
+      fclose(f);
+  }
   adjust_shell_level (1);
 }
 
